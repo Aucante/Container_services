@@ -1,0 +1,44 @@
+parameters:
+  mailer.gmail_user: 'magali@gmail.com'
+  mailer.gmail_password: 'password'
+
+services:
+  _instanceof:
+    App\HasLoggerInterface:
+      public: true
+      autowire: true
+      tags: ['with_logger']
+  _defaults:
+    autowire: true
+    public: true
+  order_controller:
+    class: App\Controller\OrderController
+    calls:
+      - [sayHello, ['bonyour', 'jean']]
+      - [setSecondaryMailer, ['@mailer.gmail']]
+  database:
+    class: App\Database\Database
+  logger:
+    class: App\Logger
+  texter.fax:
+    class: App\Texter\FaxTexter
+  texter.sms:
+    class: App\Texter\SmsTexter
+    arguments: ['service.sms.com', 'apikey1234']
+  mailer.gmail:
+    class: App\Mailer\GmailMailer
+    arguments: ['%mailer.gmail_user%','%mailer.gmail_password%']
+  mailer.smtp:
+    class: App\Mailer\SmtpMailer
+    arguments: ['smtp://localhost', 'root', '123']
+  App\Controller\OrderController:
+    alias: order_controller
+    public: true
+  App\Database\Database: '@database'
+  App\\Mailer\GmailMailer: '@mailer.gmail'
+  App\texter\SmsTexter: '@texter.sms'
+  App\Mailer\SmtpMailer: '@mailer.smtp'
+  App\Mailer\MailerInterface: '@mailer.smtp'
+  App\Texter\FaxTexter: '@texter.fax'
+  App\Texter\TexterInterface: '@texter.sms'
+  App\Logger: '@logger'
