@@ -16,21 +16,9 @@ services:
     calls:
       - [sayHello, ['bonyour', 'jean']]
       - [setSecondaryMailer, ['@mailer.gmail']]
-  database:
-    class: App\Database\Database
-  logger:
-    class: App\Logger
-  texter.fax:
-    class: App\Texter\FaxTexter
   texter.sms:
     class: App\Texter\SmsTexter
-    arguments: ['service.sms.com', 'apikey1234']
-  mailer.gmail:
-    class: App\Mailer\GmailMailer
-    arguments: ['%mailer.gmail_user%','%mailer.gmail_password%']
-  mailer.smtp:
-    class: App\Mailer\SmtpMailer
-    arguments: ['smtp://localhost', 'root', '123']
+    arguments: [ 'service.sms.com', 'apikey1234']
   App\Controller\OrderController:
     alias: order_controller
     public: true

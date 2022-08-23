@@ -25,6 +25,7 @@ $container = new ContainerBuilder();
 
 $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/config'));
 $loader->load('services.yaml');
+$loader->load('services2.yaml');
 
 $container->addCompilerPass(new LoggerCompilerPass);
 
